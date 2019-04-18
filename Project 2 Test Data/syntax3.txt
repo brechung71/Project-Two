@@ -1,0 +1,11 @@
+-- Error in statement, missing then
+
+function main a: integer returns integer;
+    b: integer is a * 2;
+begin
+    if a <= 0
+        b + 3;
+    else
+        b * 4;
+    endif;
+end;

@@ -1,0 +1,11 @@
+-- Error in body, missing begin
+
+function main a: integer returns real;
+    b: integer is a * 2;
+    c: real is 6.0;
+    if a > c then
+        b + 3.0;
+    else
+        b - 4.;
+    endif;
+end;
