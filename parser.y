@@ -37,18 +37,18 @@ function_header:
 	FUNCTION IDENTIFIER optional_parameter RETURNS type ';' ;
 
 optional_variable:
-	variable |
+	optional_variable variable |
 	;
 
 variable:
-	IDENTIFIER ':' type IS statement_ ;
+	IDENTIFIER':' type IS statement_ ;
 
 optional_parameter:
     optional_parameter parameter |
     ;
 
 parameter:
-      IDENTIFIER ':' type  ;
+      IDENTIFIER':' type  ;
 
 type:
 	INTEGER |
@@ -87,23 +87,33 @@ operator:
   ANDOP |
   OROP ;
 
-
+/*I wasn't sure which way you wanted it Professor Jarc so I'm giving redundant cases*/
 expression:
-  expression ANDOP relation |
-	relation ;
+  expression ANDOP relation | expression OROP relation |
+  relation;
+
+
 
 relation:
 	relation RELOP term |
 	term;
 
+
 term:
 	term ADDOP factor |
 	factor ;
 
+
 factor:
 	factor MULOP primary |
   factor REMOP |
-	primary ;
+  exponent;
+//	primary ;
+
+exponent:
+  factor EXPOP primary |
+  primary ;
+
 
 primary:
 	'(' expression ')' |

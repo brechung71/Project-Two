@@ -38,10 +38,12 @@ int lastLine()
 	printf("\r");
 	displayErrors();
 	printf("     \n");
-	if (totalErrors == 0)
-	printf("%s\n", "Compiled Successfully!");
-	else
-	printf("Lexical Errors: %d\nSyntax Errors: %d\nSemantic Errors: %d\n", lexicalErrors, syntaxErrors, semanticErrors);
+	if (totalErrors == 0){
+		printf("%s\n", "Compiled Successfully!");
+	}
+	else {
+		printf("Lexical Errors: %d\nSyntax Errors: %d\nSemantic Errors: %d\n", lexicalErrors, syntaxErrors, semanticErrors);
+	}
 	return (totalErrors);
 }
 
@@ -53,12 +55,15 @@ void appendError(ErrorCategories errorCategory, string message)
 		"Semantic Error, ", "Semantic Error, Duplicate Identifier: ",
 		"Semantic Error, Undeclared " };
 		error += messages[errorCategory] + message;
-		if (errorCategory == 0)
+		if (errorCategory == 0){
 				lexicalErrors++;
-		else if (errorCategory == 1)
+		}
+		else if (errorCategory == 1){
 				syntaxErrors++;
-		else if (errorCategory >= 2 && errorCategory <= 4)
+			}
+		else if (errorCategory >= 2 && errorCategory <= 4){
 				semanticErrors++;
+			}
 	totalErrors++;
 
 
@@ -66,8 +71,9 @@ void appendError(ErrorCategories errorCategory, string message)
 
 void displayErrors()
 {
-	if (error != "")
+	if (error != ""){
 		printf("%s\n", error.c_str());
+	}
 	error = "";
 
 }
