@@ -84,12 +84,12 @@ operator:
   MULOP REMOP |
   ADDOP |
   RELOP |
-  OROP |
-  ANDOP ;
+  ANDOP |
+  OROP ;
 
 
 expression:
-	expression ANDOP relation |
+  expression ANDOP relation |
 	relation ;
 
 relation:

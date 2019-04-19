@@ -38,7 +38,6 @@ int lastLine()
 	printf("\r");
 	displayErrors();
 	printf("     \n");
-	return totalErrors;
 	if (totalErrors == 0)
 	printf("%s\n", "Compiled Successfully!");
 	else
