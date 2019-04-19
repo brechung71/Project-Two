@@ -17,16 +17,16 @@ void yyerror(const char* message);
 %error-verbose
 
 %token IDENTIFIER
-%token INT_LITERAL
-%token REAL_LITERAL
-%token BOOL_LITERAL
+%token <primary> INT_LITERAL
+%token <primary> REAL_LITERAL
+%token <primary> BOOL_LITERAL
 
 
-%token ADDOP MULOP RELOP ANDOP EXPOP REMOP
+%token ADDOP MULOP RELOP OROP ANDOP EXPOP REMOP
 
 %token BEGIN_ BOOLEAN END ENDREDUCE FUNCTION INTEGER IS REDUCE RETURNS CASE ELSE ARROW
 
-%token ENDCASE ENDIF IF OTHERS REAL THEN WHEN OROP NOT
+%token ENDCASE ENDIF IF OTHERS REAL THEN WHEN NOT
 
 %%
 
@@ -34,7 +34,7 @@ function:
 	function_header optional_variable body ;
 
 function_header:
-	FUNCTION IDENTIFIER RETURNS type ';' ;
+	FUNCTION IDENTIFIER optional_parameter RETURNS type ';' ;
 
 optional_variable:
 	variable |
@@ -42,6 +42,13 @@ optional_variable:
 
 variable:
 	IDENTIFIER ':' type IS statement_ ;
+
+optional_parameter:
+    optional_parameter parameter |
+    ;
+
+parameter:
+      IDENTIFIER ':' type  ;
 
 type:
 	INTEGER |
@@ -56,30 +63,30 @@ statement_:
 	error ';' ;
 
 statement:
-	expression ; |
-	REDUCE operator reductions ENDREDUCE ; |
-  IF expression THEN statement ELSE statement ENDIF ; |
-  CASE expression IS optional_cases OTHERS ARROW statement ';' ENDCASE ';' ;
+	expression |
+	REDUCE operator reductions ENDREDUCE  |
+  IF expression THEN statement_ ELSE statement_ ENDIF  |
+  CASE expression IS optional_cases OTHERS ARROW statement_ ENDCASE ;
+
+reductions:
+  	reductions statement_ |
+  	;
 
 optional_cases:
 	optional_cases case |
-  case ;
+  ;
 
 case:
-  WHEN INT_LITERAL ARROW statement ;
+  WHEN INT_LITERAL ARROW statement_ ;
 
 operator:
 	EXPOP |
-  MULOP |
+  MULOP REMOP |
   ADDOP |
-  REMOP |
   RELOP |
-  ANDOP |
-  OROP ;
+  OROP |
+  ANDOP ;
 
-reductions:
-	reductions statement_ |
-	;
 
 expression:
 	expression ANDOP relation |
@@ -95,6 +102,7 @@ term:
 
 factor:
 	factor MULOP primary |
+  factor REMOP |
 	primary ;
 
 primary:

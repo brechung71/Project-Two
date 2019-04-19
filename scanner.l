@@ -68,7 +68,6 @@ then		{ ECHO; return(THEN); }
 when		{ ECHO; return(WHEN); }
 or		{ ECHO; return(OROP); }
 not   { ECHO; return(NOT); }
-{real} {ECHO; return(REAL_LITERAL);}
 {id}		{ ECHO; return(IDENTIFIER);}
 {int}		{ ECHO; return(INT_LITERAL); }
 {punc}		{ ECHO; return(yytext[0]); }
