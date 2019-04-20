@@ -17,9 +17,9 @@ void yyerror(const char* message);
 %error-verbose
 
 %token IDENTIFIER
-%token <primary> INT_LITERAL
-%token <primary> REAL_LITERAL
-%token <primary> BOOL_LITERAL
+%token INT_LITERAL
+%token REAL_LITERAL
+%token BOOL_LITERAL
 
 
 %token ADDOP MULOP RELOP OROP ANDOP EXPOP REMOP
@@ -41,19 +41,18 @@ optional_variable:
 	;
 
 variable:
-	IDENTIFIER':' type IS statement_ ;
+	IDENTIFIER ':' type IS statement_ ;
+
 
 optional_parameter:
-    optional_parameter parameter |
-    ;
+    optional_parameter RETURNS type ',' |
+    parameter ;
 
 parameter:
-      IDENTIFIER':' type  ;
+  IDENTIFIER ':' type  |
+  ;
 
-type:
-	INTEGER |
-  REAL |
-	BOOLEAN ;
+type: INTEGER | REAL | BOOLEAN ;
 
 body:
 	BEGIN_ statement_ END ';' ;
@@ -80,44 +79,41 @@ case:
   WHEN INT_LITERAL ARROW statement_ ;
 
 operator:
-	EXPOP |
-  MULOP REMOP |
   ADDOP |
-  RELOP |
-  ANDOP |
-  OROP ;
-
-/*I wasn't sure which way you wanted it Professor Jarc so I'm giving redundant cases*/
+  MULOP REMOP |
+  EXPOP ;
+  
 expression:
-  expression ANDOP relation | expression OROP relation |
+  expression ANDOP relation |
+	expression2;
+
+expression2:
+  expression OROP relation |
   relation;
-
-
 
 relation:
 	relation RELOP term |
 	term;
 
-
 term:
 	term ADDOP factor |
 	factor ;
 
-
 factor:
 	factor MULOP primary |
   factor REMOP |
-  exponent;
-//	primary ;
+	exponent ;
 
 exponent:
-  factor EXPOP primary |
-  primary ;
+  factor EXPOP notion |
+  notion;
 
+notion:
+  notion NOT primary |
+  primary;
 
 primary:
 	'(' expression ')' |
-  NOT |
 	INT_LITERAL | REAL_LITERAL | BOOL_LITERAL |
 	IDENTIFIER ;
 
